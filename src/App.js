@@ -1,5 +1,5 @@
 import MoneyManager from './components/MoneyManager'
-import './App.css';
+import './App.scss';
 
 function App() {
   return (

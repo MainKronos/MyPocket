@@ -1,45 +1,16 @@
-import { Component } from 'react'
+import { Component, Fragment } from 'react'
 
 import TransactionHistory from '../TransactionHistory'
 import MoneyDetails from '../MoneyDetails'
+import TransactionInput from '../TransactionInput'
+
+import {transactionTypeOptions, UUID} from '../utils'
 
 import './index.scss'
-
-function UUID() {
-	let
-		d = new Date().getTime(),
-		d2 = (performance && performance.now && (performance.now() * 1000)) || 0;
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-		let r = Math.random() * 16;
-		if (d > 0) {
-			r = (d + r) % 16 | 0;
-			d = Math.floor(d / 16);
-		} else {
-			r = (d2 + r) % 16 | 0;
-			d2 = Math.floor(d2 / 16);
-		}
-		return (c === 'x' ? r : ((r & 0x7) | 0x8)).toString(16);
-	});
-}
-
-const transactionTypeOptions = [
-	{
-		optionId: 'INCOME',
-		displayText: 'Income',
-	},
-	{
-		optionId: 'EXPENSES',
-		displayText: 'Expenses',
-	},
-]
 
 class MoneyManager extends Component {
 	state = {
 		transactionsList: [],
-		titleInput: '',
-		amountInput: '',
-		dateInput: new Date(new Date().setUTCHours(0, 0, 0, 0)),
-		optionId: transactionTypeOptions[0].optionId,
 	}
 
 	deleteTransaction = id => {
@@ -53,44 +24,18 @@ class MoneyManager extends Component {
 		})
 	}
 
-	onAddTransaction = event => {
-		event.preventDefault()
-		const { titleInput, amountInput, dateInput, optionId } = this.state
-		const typeOption = transactionTypeOptions.find(
-			eachTransaction => eachTransaction.optionId === optionId,
-		)
-		const { displayText } = typeOption
+	addTransaction = (titleInput, amountInput, dateInput, typeInput) => {
 		const newTransaction = {
 			id: UUID(),
 			title: titleInput,
 			amount: amountInput,
 			date: dateInput,
-			type: displayText,
+			type: typeInput,
 		}
 
 		this.setState(prevState => ({
-			transactionsList: [...prevState.transactionsList, newTransaction],
-			titleInput: '',
-			amountInput: '',
-			dateInput: new Date(new Date().setUTCHours(0, 0, 0, 0)),
-			optionId: transactionTypeOptions[0].optionId,
-		}))
-	}
-
-	onChangeOptionId = event => {
-		this.setState({ optionId: event.target.value })
-	}
-
-	onChangeAmountInput = event => {
-		this.setState({ amountInput: parseFloat(event.target.value) })
-	}
-
-	onChangeDateInput = event => {
-		this.setState({ dateInput: new Date(event.target.value) })
-	}
-
-	onChangeTitleInput = event => {
-		this.setState({ titleInput: event.target.value })
+			transactionsList: [...prevState.transactionsList, newTransaction]
+		}));
 	}
 
 	getExpenses = () => {
@@ -98,7 +43,7 @@ class MoneyManager extends Component {
 		let expensesAmount = 0
 
 		transactionsList.forEach(eachTransaction => {
-			if (eachTransaction.type === transactionTypeOptions[1].displayText) {
+			if (eachTransaction.type === transactionTypeOptions[1]) {
 				expensesAmount += eachTransaction.amount
 			}
 		})
@@ -110,7 +55,7 @@ class MoneyManager extends Component {
 		const { transactionsList } = this.state
 		let incomeAmount = 0
 		transactionsList.forEach(eachTransaction => {
-			if (eachTransaction.type === transactionTypeOptions[0].displayText) {
+			if (eachTransaction.type === transactionTypeOptions[0]) {
 				incomeAmount += eachTransaction.amount
 			}
 		})
@@ -125,7 +70,7 @@ class MoneyManager extends Component {
 		let expensesAmount = 0
 
 		transactionsList.forEach(eachTransaction => {
-			if (eachTransaction.type === transactionTypeOptions[0].displayText) {
+			if (eachTransaction.type === transactionTypeOptions[0]) {
 				incomeAmount += eachTransaction.amount
 			} else {
 				expensesAmount += eachTransaction.amount
@@ -138,13 +83,10 @@ class MoneyManager extends Component {
 	}
 
 	render() {
-		const { titleInput, amountInput, dateInput, optionId, transactionsList } = this.state
-		const balanceAmount = this.getBalance()
-		const incomeAmount = this.getIncome()
-		const expensesAmount = this.getExpenses()
+		const { transactionsList } = this.state
 
 		return (
-			<div className="container">
+			<Fragment>
 				<header>
 					<h1>Hi, Richard</h1>
 					<h3>
@@ -153,92 +95,21 @@ class MoneyManager extends Component {
 					
 				</header>
 				<MoneyDetails
-					balanceAmount={balanceAmount}
-					incomeAmount={incomeAmount}
-					expensesAmount={expensesAmount}
+					balanceAmount={this.getBalance()}
+					incomeAmount={this.getIncome()}
+					expensesAmount={this.getExpenses()}
 				/>
-				<aside className="transaction-details">
-					<form onSubmit={this.onAddTransaction}>
-						<h2>Add Transaction</h2>
-						<label htmlFor="title">
-							TITLE
-						</label>
-						<input
-							type="text"
-							id="title"
-							value={titleInput}
-							onChange={this.onChangeTitleInput}
-							placeholder="TITLE"
-							required
-						/>
-						<label htmlFor="amount">
-							AMOUNT
-						</label>
-						<input
-							type="number"
-							id="amount"
-							value={amountInput}
-							step=".01"
-							min={0.01}
-							onChange={this.onChangeAmountInput}
-							placeholder="AMOUNT"
-							required
-						/>
-						<label htmlFor="date">
-							DATE
-						</label>
-						<input
-							type="date"
-							id="date"
-							value={dateInput.toISOString().substring(0, 10)}
-							onChange={this.onChangeDateInput}
-							required
-						/>
-						<label htmlFor="select">
-							TYPE
-						</label>
-						<select
-							id="select"
-							value={optionId}
-							onChange={this.onChangeOptionId}
-						>
-							{transactionTypeOptions.map(eachOption => (
-								<option key={eachOption.optionId} value={eachOption.optionId}>
-									{eachOption.displayText}
-								</option>
-							))}
-						</select>
-						<button type="submit">
-							Add
-						</button>
-					</form>
-				</aside>
-					<section className="history-transactions">
-						<h2>History</h2>
-						<table>
-							<thead>
-								<tr>
-									<th>Title</th>
-									<th>Amount</th>
-									<th>Date</th>
-									<th>Type</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								{transactionsList.map(eachTransaction => (
-									<TransactionHistory
-										key={eachTransaction.id}
-										transactionDetails={eachTransaction}
-										deleteTransaction={this.deleteTransaction}
-									/>
-								))}
-							</tbody>
-						</table>
-					</section>
-			</div>
+				<TransactionInput
+					addTransaction={this.addTransaction}
+				/>
+				<TransactionHistory 
+					transactionsList={transactionsList}
+					deleteTransaction={this.deleteTransaction}
+				/>						
+			</Fragment>
 		)
 	}
 }
+
 
 export default MoneyManager

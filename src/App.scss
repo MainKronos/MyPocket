@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+	display: grid;
+	min-height: 100vh;
+	width: 80%;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 32px;
+
+	grid-template-areas:
+		"header header header"
+		"money-details money-details money-details"
+		"transaction-input transaction-history transaction-history";
+
+	// grid-template-columns: 1fr 1fr;
+	grid-auto-columns: minmax(0, 1fr);
+
+	gap: 32px;
+
+	@media screen and (max-width: 1080px) {
+		width: 100%;
+	}
+
+	@media screen and (max-width: 900px) {
+		grid-template-areas:
+		"header header"
+		"money-details money-details"
+		"transaction-input transaction-history";
+	}
+
+	@media screen and (max-width: 768px) {
+		
+		grid-template-areas:
+			"header"
+			"money-details"
+			"transaction-input"
+			"transaction-history";
+	}
+}

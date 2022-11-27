@@ -1,4 +1,6 @@
-import './index.css'
+import { Fragment } from 'react'
+
+import './index.scss'
 import balance from './img/balance-image.png';
 import income from './img/income-image.png';
 import expenses from './img/expenses-image.png';

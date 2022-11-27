@@ -9,46 +9,43 @@ export default function MoneyDetails(props) {
 	const { balanceAmount, incomeAmount, expensesAmount } = props
 
 	return (
-		<div className="money-details-container">
-			<div className="balance-container">
+		<Fragment>
+			<article className="balance-container">
 				<img
 					src={balance}
 					alt="balance"
-					className="details-img"
 				/>
 				<div>
-					<p className="details-text">Your Balance</p>
-					<p className="details-money">
+					<p>Your Balance</p>
+					<data>
 						€ {balanceAmount.toFixed(2)}
-					</p>
+					</data>
 				</div>
-			</div>
-			<div className="income-container">
+			</article>
+			<article className="income-container">
 				<img
 					src={income}
 					alt="income"
-					className="details-img"
 				/>
 				<div>
-					<p className="details-text">Your Income</p>
-					<p className="details-money">
+					<p>Your Income</p>
+					<data>
 						€ {incomeAmount.toFixed(2)}
-					</p>
+					</data>
 				</div>
-			</div>
-			<div className="expenses-container">
+			</article>
+			<article className="expenses-container">
 				<img
 					src={expenses}
 					alt="expenses"
-					className="details-img"
 				/>
 				<div>
-					<p className="details-text">Your Expenses</p>
-					<p className="details-money">
+					<p>Your Expenses</p>
+					<data>
 						€ {expensesAmount.toFixed(2)}
-					</p>
+					</data>
 				</div>
-			</div>
-		</div>
+			</article>
+		</Fragment>
 	)
 }

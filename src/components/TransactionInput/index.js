@@ -86,6 +86,7 @@ export default class TransactionInput extends Component{
 						id="date"
 						value={dateInput.toISOString().substring(0, 10)}
 						onChange={this.onChangeDateInput}
+						max={new Date().toISOString().split("T")[0]}
 						required
 					/>
 					<label htmlFor="select">

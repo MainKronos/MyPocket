@@ -1,15 +1,6 @@
 
 .transaction-input {
 	grid-area: transaction-input;
-	// display: inline;
-	// display: flex;
-	// flex-direction: column;
-	// justify-content: space-between;
-	// margin-bottom: 24px;
-
-	@media screen and (min-width: 768px) {
-		// flex-direction: row;
-	}
 }
 
 form {
@@ -17,7 +8,7 @@ form {
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: flex-start;
-	height: 424px;
+	height: 100%;
 	width: 100%;
 	border: 1px solid #cbd5e1;
 	border-radius: 12px;

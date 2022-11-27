@@ -34,7 +34,7 @@ class MoneyManager extends Component {
 		}
 
 		this.setState(prevState => ({
-			transactionsList: [...prevState.transactionsList, newTransaction]
+			transactionsList: [...prevState.transactionsList, newTransaction].sort((a,b)=>{return(b.date-a.date)})
 		}));
 	}
 

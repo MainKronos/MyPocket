@@ -2,6 +2,7 @@
 	grid-area: transaction-history;
 	width: 100%;
 	min-height: 326px;
+	max-height: 480px;
 	border: 1px solid #cbd5e1;
 	border-radius: 12px;
 	padding-left: 24px;
@@ -10,19 +11,6 @@
 	padding-right: 24px;
 	// margin-top: 32px;
 }
-
-// @media screen and (min-width: 768px) {
-// 	.transaction-history {
-// 		width: 55%;
-// 		min-height: 424px;
-// 		padding-top: 24px;
-// 		padding-left: 28px;
-// 		padding-right: 41px;
-// 		padding-bottom: 40px;
-// 		margin-top: 0px;
-// 		margin-left: 32px;
-// 	}
-// }
 
 .delete-container {
 	display: flex;
@@ -60,20 +48,19 @@ table {
 	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
+	
 
-	thead {
+	thead {		
 		> tr {
 			align-items: center;
 			height: 48px;
 			border: 1px solid #cbd5e1;
-
+			background-color: white;
 			th {
 				color: #334155;
 				font-family: 'Roboto';
 				font-size: 12px;
 				font-weight: 500;
-				width: 30%;
-				border-right: none;
 			
 				@media screen and (min-width: 768px) {
 					font-size: 16px;
@@ -83,24 +70,25 @@ table {
 	}
 
 	
-	tbody tr {
-
-
-		border-bottom: 1px solid #cbd5e1;
-		border-right: 1px solid #cbd5e1;
-		border-left: 1px solid #cbd5e1;
-		align-items: center;
-
-		td {
-			color: #475569;
-			font-family: 'Roboto';
-			font-size: 12px;
-			width: 30%;
-			text-align: center;
-			word-wrap: break-word;
+	tbody {
+		tr {
+			// height: 48px;
+			border-bottom: 1px solid #cbd5e1;
+			border-right: 1px solid #cbd5e1;
+			border-left: 1px solid #cbd5e1;
+			align-items: center;
 		
-			@media screen and (min-width: 768px) {
-				font-size: 14px;
+
+			td {
+				color: #475569;
+				font-family: 'Roboto';
+				font-size: 12px;
+				text-align: center;
+				word-wrap: break-word;
+			
+				@media screen and (min-width: 768px) {
+					font-size: 14px;
+				}
 			}
 		}
 	}

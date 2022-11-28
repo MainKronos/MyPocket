@@ -1,9 +1,23 @@
 import MoneyManager from './components/MoneyManager'
 import './App.scss';
 
+import { ConfigProvider, theme} from 'antd';
+
 function App() {
   return (
-    <MoneyManager />
+	<ConfigProvider
+	
+		theme={{
+			// token: {
+			// 	colorPrimary: '#9FA8DA',
+			// 	colorBgBase: '#212121',
+			// 	fontFamily: 'Roboto'
+			// },
+			// algorithm: theme.darkAlgorithm,
+		}}
+	>
+    	<MoneyManager />
+	</ConfigProvider>
   );
 }
 

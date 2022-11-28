@@ -1,51 +1,42 @@
 import { Fragment } from 'react'
 
-import './index.scss'
-import balance from './img/balance-image.png';
-import income from './img/income-image.png';
-import expenses from './img/expenses-image.png';
+import { Card, Col, Row, Statistic } from 'antd';
 
 export default function MoneyDetails(props) {
 	const { balanceAmount, incomeAmount, expensesAmount } = props
 
 	return (
 		<Fragment>
-			<article className="balance-container">
-				<img
-					src={balance}
-					alt="balance"
-				/>
-				<div>
-					<p>Your Balance</p>
-					<data>
-						€ {balanceAmount.toFixed(2)}
-					</data>
-				</div>
-			</article>
-			<article className="income-container">
-				<img
-					src={income}
-					alt="income"
-				/>
-				<div>
-					<p>Your Income</p>
-					<data>
-						€ {incomeAmount.toFixed(2)}
-					</data>
-				</div>
-			</article>
-			<article className="expenses-container">
-				<img
-					src={expenses}
-					alt="expenses"
-				/>
-				<div>
-					<p>Your Expenses</p>
-					<data>
-						€ {expensesAmount.toFixed(2)}
-					</data>
-				</div>
-			</article>
+			<Col span={8}>
+				<Card>
+					<Statistic
+						title="Balance"
+						value={balanceAmount}
+						precision={2}
+						prefix="€"
+					/>
+				</Card>
+			</Col>
+			<Col span={8}>
+				<Card>
+						<Statistic
+						title="Income"
+						value={incomeAmount}
+						precision={2}
+						prefix="€"
+					/>
+				</Card>
+			</Col>
+			<Col span={8}>
+				<Card>
+					<Statistic
+						title="Expenses"
+						value={expensesAmount}
+						precision={2}
+						prefix="€"
+					/>
+				</Card>
+			</Col>
 		</Fragment>
 	)
 }

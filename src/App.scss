@@ -5,47 +5,5 @@
 }
 
 body {
-	// color: rgba(255,255,255,0.60);
-	// background-color: #121212;
-	font-family: 'Roboto';
-}
-
-#root {
-	display: grid;
-	min-height: 100vh;
-	width: 80%;
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 32px;
-
-	grid-template-areas:
-		"header header header"
-		"balance income expenses"
-		"transaction-input transaction-history transaction-history";
-
-	grid-auto-columns: minmax(0, 1fr);
-
-	gap: 32px;
-
-	@media screen and (max-width: 1080px) {
-		width: 100%;
-	}
-
-	@media screen and (max-width: 900px) {
-		grid-template-areas:
-		"header header header header header header"
-		"balance balance income income expenses expenses"
-		"transaction-input transaction-input transaction-input transaction-history transaction-history transaction-history";
-	}
-
-	@media screen and (max-width: 768px) {
-		
-		grid-template-areas:
-			"header"
-			"balance"
-			"income"
-			"expenses"
-			"transaction-input"
-			"transaction-history";
-	}
+	margin: 0;
 }

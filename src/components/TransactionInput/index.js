@@ -2,7 +2,9 @@ import { Component } from 'react'
 
 import { transactionTypeOptions } from '../utils'
 
-import './index.scss'
+// import './index.scss'
+
+import { Button, Checkbox, Form, Input, Card, Col, InputNumber, DatePicker } from 'antd';
 
 export default class TransactionInput extends Component{
 	constructor(props) {
@@ -41,7 +43,7 @@ export default class TransactionInput extends Component{
 	}
 
 	onAddTransaction = (event) => {
-		event.preventDefault();
+		// event.preventDefault();
 		const { titleInput, amountInput, timestampInput, typeInput } = this.state;
 		this.props.addTransaction(titleInput, amountInput, timestampInput, typeInput);
 		this.reset();
@@ -51,63 +53,62 @@ export default class TransactionInput extends Component{
 		const { titleInput, amountInput, timestampInput, typeInput } = this.state;
 		
 		return(
-			<section className="transaction-input">
-				<form onSubmit={this.onAddTransaction}>
-					<h2>Add Transaction</h2>
-					<label htmlFor="title">
-						TITLE
-					</label>
-					<input
-						type="text"
-						id="title"
-						value={titleInput}
-						onChange={this.onChangeTitleInput}
-						placeholder="TITLE"
-						required
-					/>
-					<label htmlFor="amount">
-						AMOUNT
-					</label>
-					<input
-						type="number"
-						id="amount"
-						value={amountInput}
-						step=".01"
-						min={0.01}
-						onChange={this.onChangeAmountInput}
-						placeholder="AMOUNT"
-						required
-					/>
-					<label htmlFor="date">
-						DATE
-					</label>
-					<input
-						type="date"
-						id="date"
-						value={new Date(timestampInput).toISOString().substring(0, 10)}
-						onChange={this.onChangeTimestampInput}
-						max={new Date().toISOString().split("T")[0]}
-						required
-					/>
-					<label htmlFor="select">
-						TYPE
-					</label>
-					<select
-						id="select"
-						value={typeInput}
-						onChange={this.onChangetypeInput}
-					>
-						{transactionTypeOptions.map((value, index) => (
-							<option key={index} value={value}>
-								{value}
-							</option>
-						))}
-					</select>
-					<button type="submit">
-						Add
-					</button>
-				</form>
-			</section>
+			<Col span={24}>
+				<Card title="Add Transaction">
+					<Form onFinish={this.onAddTransaction}>
+						<Form.Item
+							label="Title"
+							name="title"
+							rules={[{ required: true }]}
+						>
+							<Input
+								onChange={this.onChangeTitleInput}
+							/>
+						</Form.Item>
+						<Form.Item
+							label="Amount"
+							name="amount"
+							rules={[{ required: true }]}
+						>
+							<InputNumber 
+								addonAfter="€"
+								min="0.01"
+								step="0.01"
+								onChange={this.onChangeAmountInput}
+							/>
+						</Form.Item>
+						<Form.Item
+							label="Date"
+							name="date"
+							rules={[{ required: true }]}
+						>
+							<DatePicker
+								picker="date"
+								onChange={this.onChangeTimestampInput}
+								max={new Date().toISOString().split("T")[0]}
+								// value={new Date(timestampInput).toISOString().substring(0, 10)}
+							/>
+						</Form.Item>
+						<label htmlFor="select">
+							TYPE
+						</label>
+						<select
+							id="select"
+							value={typeInput}
+							onChange={this.onChangetypeInput}
+						>
+							{transactionTypeOptions.map((value, index) => (
+								<option key={index} value={value}>
+									{value}
+								</option>
+							))}
+						</select>
+						<button type="submit">
+							Add
+						</button>
+					</Form>
+				</Card>
+			</Col>
 		);
 	}
 }

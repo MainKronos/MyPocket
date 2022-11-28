@@ -9,8 +9,20 @@ import {transactionTypeOptions, UUID} from '../utils'
 import './index.scss'
 
 class MoneyManager extends Component {
-	state = {
-		transactionsList: [],
+
+	constructor(props) {
+		super(props)
+		this.state = {
+			transactionsList: [],
+		}
+	}
+
+	syncronize = () => {
+		let transactionsList = localStorage.getItem('transactionsList');
+		if(transactionsList == null){
+			transactionsList = [];
+		}
+		this.setState({transactionsList: transactionsList,})
 	}
 
 	deleteTransaction = id => {
@@ -88,7 +100,7 @@ class MoneyManager extends Component {
 		return (
 			<Fragment>
 				<header>
-					<h1>Hi, Richard</h1>
+					<h1>Hi, MainKronos</h1>
 					<h3>
 						Welcome back to your <em>Money Manager</em>
 					</h3>

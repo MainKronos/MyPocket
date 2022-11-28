@@ -22,7 +22,7 @@ export default function TransactionHistory (props) {
 							key = {elem.id}
 							title = {elem.title}
 							amount = {elem.amount}
-							date = {elem.date}
+							timestamp = {elem.timestamp}
 							type = {elem.type}
 							onDeleteTransaction = {()=>deleteTransaction(elem.id)}
 						/>
@@ -35,7 +35,8 @@ export default function TransactionHistory (props) {
 
 function TransactionItem(props){
 
-	const {title, amount, date, type, onDeleteTransaction} = props;
+	const {title, amount, timestamp, type, onDeleteTransaction} = props;
+	const date = new Date(timestamp);
 
 	return (
 		<tr>

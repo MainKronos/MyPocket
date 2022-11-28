@@ -10,7 +10,7 @@ export default class TransactionInput extends Component{
 		this.state = {
 			titleInput: '',
 			amountInput: '',
-			dateInput: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+			timestampInput: new Date().setUTCHours(0, 0, 0, 0),
 			typeInput: transactionTypeOptions[0],
 		};
 	}
@@ -19,7 +19,7 @@ export default class TransactionInput extends Component{
 		this.setState({
 			titleInput: '',
 			amountInput: '',
-			dateInput: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+			timestampInput: new Date().setUTCHours(0, 0, 0, 0),
 			typeInput: transactionTypeOptions[0],
 		})
 	}
@@ -32,8 +32,8 @@ export default class TransactionInput extends Component{
 		this.setState({ amountInput: parseFloat(event.target.value) })
 	}
 
-	onChangeDateInput = (event) => {
-		this.setState({ dateInput: new Date(event.target.value) })
+	onChangeTimestampInput = (event) => {
+		this.setState({ timestampInput: new Date(event.target.value).getTime() })
 	}
 
 	onChangeTitleInput = (event) => {
@@ -42,13 +42,13 @@ export default class TransactionInput extends Component{
 
 	onAddTransaction = (event) => {
 		event.preventDefault();
-		const { titleInput, amountInput, dateInput, typeInput } = this.state;
-		this.props.addTransaction(titleInput, amountInput, dateInput, typeInput);
+		const { titleInput, amountInput, timestampInput, typeInput } = this.state;
+		this.props.addTransaction(titleInput, amountInput, timestampInput, typeInput);
 		this.reset();
 	}
 
 	render() {
-		const { titleInput, amountInput, dateInput, typeInput } = this.state;
+		const { titleInput, amountInput, timestampInput, typeInput } = this.state;
 		
 		return(
 			<section className="transaction-input">
@@ -84,8 +84,8 @@ export default class TransactionInput extends Component{
 					<input
 						type="date"
 						id="date"
-						value={dateInput.toISOString().substring(0, 10)}
-						onChange={this.onChangeDateInput}
+						value={new Date(timestampInput).toISOString().substring(0, 10)}
+						onChange={this.onChangeTimestampInput}
 						max={new Date().toISOString().split("T")[0]}
 						required
 					/>

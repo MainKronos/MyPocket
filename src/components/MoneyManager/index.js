@@ -12,42 +12,48 @@ class MoneyManager extends Component {
 
 	constructor(props) {
 		super(props)
+
+		let localTransaction = localStorage.getItem('transactionsList');
+
+		if(!localTransaction){
+			localTransaction = [];
+			localStorage.setItem('transactionsList', JSON.stringify([]));
+		}else{
+			localTransaction = JSON.parse(localTransaction);
+		}
+
 		this.state = {
-			transactionsList: [],
+			transactionsList: localTransaction
 		}
 	}
 
-	syncronize = () => {
-		let transactionsList = localStorage.getItem('transactionsList');
-		if(transactionsList == null){
-			transactionsList = [];
-		}
-		this.setState({transactionsList: transactionsList,})
+	syncronize = (updatedTransactionList) => {
+		
+		localStorage.setItem('transactionsList', JSON.stringify(updatedTransactionList));
+		this.setState({transactionsList: updatedTransactionList});
 	}
 
 	deleteTransaction = id => {
-		const { transactionsList } = this.state
+		const { transactionsList } = this.state;
 		const updatedTransactionList = transactionsList.filter(
 			eachTransaction => id !== eachTransaction.id,
-		)
+		);
 
-		this.setState({
-			transactionsList: updatedTransactionList,
-		})
+		this.syncronize(updatedTransactionList);
 	}
 
-	addTransaction = (titleInput, amountInput, dateInput, typeInput) => {
+	addTransaction = (titleInput, amountInput, timestampInput, typeInput) => {
 		const newTransaction = {
 			id: UUID(),
 			title: titleInput,
 			amount: amountInput,
-			date: dateInput,
+			timestamp: timestampInput,
 			type: typeInput,
 		}
 
-		this.setState(prevState => ({
-			transactionsList: [...prevState.transactionsList, newTransaction].sort((a,b)=>{return(b.date-a.date)})
-		}));
+		const { transactionsList } = this.state;
+
+		this.syncronize([...transactionsList, newTransaction].sort((a,b)=>{return(b.timestamp-a.timestamp)}));
 	}
 
 	getExpenses = () => {

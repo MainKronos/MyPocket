@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { Layout, Typography, Card, Row, Col, Space } from 'antd';
+import { Layout, Typography, Card, Row, Col } from 'antd';
 
 import TransactionHistory from '../TransactionHistory'
 import MoneyDetails from '../MoneyDetails'
@@ -7,9 +7,9 @@ import TransactionInput from '../TransactionInput'
 
 import {transactionTypeOptions, UUID} from '../utils'
 
-import './index.scss'
+// import './index.scss'
 
-const { Footer, Content } = Layout;
+const { Content } = Layout;
 const { Title } = Typography;
 
 
@@ -34,7 +34,7 @@ class MoneyManager extends Component {
 
 	syncronize = (updatedTransactionList) => {
 		
-		localStorage.setItem('transactionsList', JSON.stringify(updatedTransactionList));
+		// localStorage.setItem('transactionsList', JSON.stringify(updatedTransactionList));
 		this.setState({transactionsList: updatedTransactionList});
 	}
 
@@ -109,38 +109,38 @@ class MoneyManager extends Component {
 		const { transactionsList } = this.state
 
 		return (
-			<Layout>
-				<Layout className='container'>
-					<Content>
-						<Row gutter={[48, 24]}>
-							<Col span={24}>
-								<Card>
-									<Title level={1}>Hi, MainKronos</Title>
-									<Title level={3}>
-										Welcome back to your <em>Money Manager</em>
-									</Title>
-								</Card>
-							</Col>
-							
-							<MoneyDetails
-								balanceAmount={this.getBalance()}
-								incomeAmount={this.getIncome()}
-								expensesAmount={this.getExpenses()}
-							/>
-							<TransactionInput
-								addTransaction={this.addTransaction}
-							/>
-							<TransactionHistory 
-								transactionsList={transactionsList}
-								deleteTransaction={this.deleteTransaction}
-							/>
-						</Row>
-					</Content>	
-					<Footer>Footer</Footer>				
-				</Layout>
-			</Layout>
+			<Content>
+				<Row gutter={[48, 48]}>
+					<MoneyHeader/>
+					<MoneyDetails
+						balanceAmount={this.getBalance()}
+						incomeAmount={this.getIncome()}
+						expensesAmount={this.getExpenses()}
+					/>
+					<TransactionInput
+						addTransaction={this.addTransaction}
+					/>
+					<TransactionHistory 
+						transactionsList={transactionsList}
+						deleteTransaction={this.deleteTransaction}
+					/>
+				</Row>
+			</Content>	
 		)
 	}
+}
+
+function MoneyHeader(props){
+	return (
+		<Col span={24}>
+			<Card>
+				<Title level={1}>Hi, MainKronos</Title>
+				<Title level={3}>
+					Welcome back to your <em>Money Manager</em>
+				</Title>
+			</Card>
+		</Col>
+	);
 }
 
 

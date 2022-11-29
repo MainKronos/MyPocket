@@ -4,7 +4,8 @@ import { transactionTypeOptions } from '../utils'
 
 // import './index.scss'
 
-import { Button, Checkbox, Form, Input, Card, Col, InputNumber, DatePicker } from 'antd';
+import { Card, Col } from 'antd';
+import { Form, Input, Button, Select, InputNumber, DatePicker } from 'antd';
 
 export default class TransactionInput extends Component{
 	constructor(props) {
@@ -26,16 +27,16 @@ export default class TransactionInput extends Component{
 		})
 	}
 	
-	onChangetypeInput = (event) => {
-		this.setState({ typeInput: event.target.value })
+	onChangetypeInput = (value) => {
+		this.setState({ typeInput: transactionTypeOptions[value] })
 	}
 
-	onChangeAmountInput = (event) => {
-		this.setState({ amountInput: parseFloat(event.target.value) })
+	onChangeAmountInput = (value) => {
+		this.setState({ amountInput: value })
 	}
 
-	onChangeTimestampInput = (event) => {
-		this.setState({ timestampInput: new Date(event.target.value).getTime() })
+	onChangeTimestampInput = (date, dateString) => {
+		this.setState({ timestampInput: new Date(dateString).getTime() })
 	}
 
 	onChangeTitleInput = (event) => {
@@ -50,16 +51,18 @@ export default class TransactionInput extends Component{
 	}
 
 	render() {
-		const { titleInput, amountInput, timestampInput, typeInput } = this.state;
-		
+		// const { titleInput, amountInput, timestampInput, typeInput } = this.state;
 		return(
-			<Col span={24}>
+			<Col span={10}>
 				<Card title="Add Transaction">
-					<Form onFinish={this.onAddTransaction}>
+					<Form 
+						onFinish={this.onAddTransaction}
+						// layout="vertical"
+					>
 						<Form.Item
 							label="Title"
 							name="title"
-							rules={[{ required: true }]}
+							required={true}
 						>
 							<Input
 								onChange={this.onChangeTitleInput}
@@ -68,7 +71,7 @@ export default class TransactionInput extends Component{
 						<Form.Item
 							label="Amount"
 							name="amount"
-							rules={[{ required: true }]}
+							required={true}
 						>
 							<InputNumber 
 								addonAfter="€"
@@ -80,7 +83,7 @@ export default class TransactionInput extends Component{
 						<Form.Item
 							label="Date"
 							name="date"
-							rules={[{ required: true }]}
+							required={true}
 						>
 							<DatePicker
 								picker="date"
@@ -89,23 +92,20 @@ export default class TransactionInput extends Component{
 								// value={new Date(timestampInput).toISOString().substring(0, 10)}
 							/>
 						</Form.Item>
-						<label htmlFor="select">
-							TYPE
-						</label>
-						<select
-							id="select"
-							value={typeInput}
-							onChange={this.onChangetypeInput}
+						<Form.Item
+							label="Type"
+							name="type"
+							required={true}
 						>
-							{transactionTypeOptions.map((value, index) => (
-								<option key={index} value={value}>
-									{value}
-								</option>
-							))}
-						</select>
-						<button type="submit">
+							<Select
+								onChange={this.onChangetypeInput}
+								options={transactionTypeOptions.map((value, index) =>{const tmp = {};tmp.value=index;tmp.label=value;return tmp;})}
+							/>
+						</Form.Item>
+						
+						<Button type="primary" htmlType="submit">
 							Add
-						</button>
+						</Button>
 					</Form>
 				</Card>
 			</Col>

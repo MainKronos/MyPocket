@@ -1,5 +1,7 @@
 // import './index.scss'
 
+import { transactionTypeOptions } from '../utils'
+
 import { Card, Col, Table, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
@@ -10,27 +12,48 @@ export default function TransactionHistory (props) {
 		<Col span={14}>
 			<Card title="History">
 				<Table
-					columns={[...["Title","Amount","Date","Type"].map((value) => {
-						const tmp = {};
-						tmp.title=value;
-						tmp.dataIndex=value.toLowerCase();
-						tmp.key=value.toLowerCase();
-						return tmp;
-					}),{
-						title: "Action",
-						key: "action",
-						render: (_, record) => (
-							// <a>Delete</a>
-								
-							
-							<Button 
-								type="primary" 
-								icon={<DeleteOutlined />}
-								onClick={()=>deleteTransaction(record.key)}
-								danger
-							/>
-						)
-					}]}
+					columns={[
+						{
+							title: "Title",
+							dataIndex: "title",
+							key: "title",
+						},
+						{
+							title: "Amount",
+							dataIndex: "amount",
+							key: "amount",
+							sorter: (a,b) => a.amount-b.amount,
+						},
+						{
+							title: "Date",
+							dataIndex: "date",
+							key: "date",
+						},
+						{
+							title: "Type",
+							dataIndex: "type",
+							key: "type",
+							filters: transactionTypeOptions.map((value) =>{
+								const tmp = {};
+								tmp.value=value;
+								tmp.text=value;
+								return tmp;
+							}),
+							onFilter: (value, record) => record.type === value,
+						},
+						{
+							title: "Action",
+							key: "action",
+							render: (_, record) => (
+								<Button 
+									type="primary" 
+									icon={<DeleteOutlined />}
+									onClick={()=>deleteTransaction(record.key)}
+									danger
+								/>
+							)
+						}
+					]}
 					dataSource={transactionsList.map((value) => {
 						const {id, title, amount, timestamp, type} = value;
 						const date = new Date(timestamp);

@@ -34,7 +34,7 @@ class MoneyManager extends Component {
 
 	syncronize = (updatedTransactionList) => {
 		
-		// localStorage.setItem('transactionsList', JSON.stringify(updatedTransactionList));
+		localStorage.setItem('transactionsList', JSON.stringify(updatedTransactionList));
 		this.setState({transactionsList: updatedTransactionList});
 	}
 

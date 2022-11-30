@@ -8,17 +8,18 @@ import { Card, Col } from 'antd';
 import { Form, Input, Button, Select, InputNumber, DatePicker } from 'antd';
 
 export default class TransactionInput extends Component{
+	
 	constructor(props) {
 		super(props);
-		
+
 	}
 
 	onAddTransaction = (values) => {
 		// event.preventDefault();
 		const { title, amount, date, type } = values;
 		const timestamp = new Date(date).getTime();
-		const typeOption = transactionTypeOptions[type];
-		this.props.addTransaction(title, amount, timestamp, typeOption);
+		this.props.addTransaction(title, amount, timestamp, type);
+		this.form.resetFields();
 	}
 
 	render() {
@@ -28,7 +29,6 @@ export default class TransactionInput extends Component{
 				<Card title="Add Transaction">
 					<Form 
 						onFinish={this.onAddTransaction}
-						preserve={false}
 						initialValues={{
 							title:'',
 							amount:'',
@@ -65,8 +65,7 @@ export default class TransactionInput extends Component{
 						>
 							<DatePicker
 								picker="date"
-
-								max={new Date().toISOString().split("T")[0]}
+								disabledDate={(date) => date>=dayjs()}
 								// value={new Date(timestampInput).toISOString().substring(0, 10)}
 							/>
 						</Form.Item>

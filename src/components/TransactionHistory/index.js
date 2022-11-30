@@ -9,25 +9,43 @@ export default function TransactionHistory (props) {
 	const { transactionsList, deleteTransaction } = props;
 
 	return (
-		<Col span={14}>
+		<Col span={24}>
 			<Card title="History">
 				<Table
+					size={"small"}
+					pagination={false}
+					// pagination={{
+					// 	position:"bottomCenter",
+					// 	showTotal:(total) => `Total ${total} items`,
+					// 	defaultPageSize:5,
+					// 	// defaultCurrent:1,
+					// }}
+					scroll={{
+						scrollToFirstRowOnChange:true,
+						y:300
+					}}
 					columns={[
 						{
 							title: "Title",
 							dataIndex: "title",
 							key: "title",
+							align:"center",
+							ellipsis:true
 						},
 						{
 							title: "Amount",
 							dataIndex: "amount",
 							key: "amount",
 							sorter: (a,b) => a.amount-b.amount,
+							align:"center",
+							width:90
 						},
 						{
 							title: "Date",
 							dataIndex: "date",
 							key: "date",
+							align:"center",
+							width:110
 						},
 						{
 							title: "Type",
@@ -40,6 +58,8 @@ export default function TransactionHistory (props) {
 								return tmp;
 							}),
 							onFilter: (value, record) => record.type === value,
+							align:"center",
+							width:100
 						},
 						{
 							title: "Action",
@@ -51,7 +71,9 @@ export default function TransactionHistory (props) {
 									onClick={()=>deleteTransaction(record.key)}
 									danger
 								/>
-							)
+							),
+							align:"center",
+							width:75
 						}
 					]}
 					dataSource={transactionsList.map((value) => {
@@ -60,7 +82,7 @@ export default function TransactionHistory (props) {
 						const tmp = {};
 						tmp.key=id;
 						tmp.title=title;
-						tmp.amount=amount;
+						tmp.amount=parseFloat(amount).toFixed(2) + " €";
 						tmp.date=`${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`;
 						tmp.type=type;
 						tmp.action=null;

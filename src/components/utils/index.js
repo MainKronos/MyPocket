@@ -1,6 +1,6 @@
 export const transactionTypeOptions = [
+	'Expenses',
 	'Income',
-	'Expenses'
 ]
 
 export function UUID() {

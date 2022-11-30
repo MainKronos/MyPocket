@@ -1,5 +1,6 @@
 import { Component } from 'react'
-import { Layout, Typography, Card, Row, Col } from 'antd';
+import { Layout, Typography, Card, Row, Col, FloatButton } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 import TransactionHistory from '../TransactionHistory'
 import MoneyDetails from '../MoneyDetails'
@@ -28,7 +29,8 @@ class MoneyManager extends Component {
 		}
 
 		this.state = {
-			transactionsList: localTransaction
+			transactionsList: localTransaction,
+			isModalOpen: false
 		}
 	}
 
@@ -36,6 +38,14 @@ class MoneyManager extends Component {
 		
 		localStorage.setItem('transactionsList', JSON.stringify(updatedTransactionList));
 		this.setState({transactionsList: updatedTransactionList});
+	}
+
+	openModal = () => {
+		this.setState({isModalOpen: true});
+	}
+
+	closeModal = () => {
+		this.setState({isModalOpen: false});
 	}
 
 	deleteTransaction = id => {
@@ -110,7 +120,7 @@ class MoneyManager extends Component {
 
 		return (
 			<Content>
-				<Row gutter={[48, 48]}>
+				<Row gutter={[48, 32]}>
 					<MoneyHeader/>
 					<MoneyDetails
 						balanceAmount={this.getBalance()}
@@ -119,12 +129,19 @@ class MoneyManager extends Component {
 					/>
 					<TransactionInput
 						addTransaction={this.addTransaction}
+						closeModal={this.closeModal}
+						isModalOpen={this.state.isModalOpen}
 					/>
 					<TransactionHistory 
 						transactionsList={transactionsList}
 						deleteTransaction={this.deleteTransaction}
 					/>
 				</Row>
+				<FloatButton
+					type="primary"
+					onClick={this.openModal}
+					icon={<PlusOutlined />}
+				/>
 			</Content>	
 		)
 	}

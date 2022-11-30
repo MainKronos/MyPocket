@@ -1,96 +1,107 @@
-import { Component } from 'react'
-
 import { transactionTypeOptions } from '../utils'
 
 // import './index.scss'
 import dayjs from 'dayjs';
-import { Card, Col } from 'antd';
-import { Form, Input, Button, Select, InputNumber, DatePicker } from 'antd';
+import { Form, Input, Select, InputNumber, DatePicker, Modal  } from 'antd';
 
-export default class TransactionInput extends Component{
-	
-	constructor(props) {
-		super(props);
+export default function TransactionInput(props){
 
-	}
+	const { addTransaction, closeModal, isModalOpen } = props
 
-	onAddTransaction = (values) => {
-		// event.preventDefault();
-		const { title, amount, date, type } = values;
-		const timestamp = new Date(date).getTime();
-		this.props.addTransaction(title, amount, timestamp, type);
-		this.form.resetFields();
-	}
+	const [form] = Form.useForm();
 
-	render() {
-		// const { titleInput, amountInput, timestampInput, typeInput } = this.state;
-		return(
-			<Col span={10}>
-				<Card title="Add Transaction">
-					<Form 
-						onFinish={this.onAddTransaction}
-						initialValues={{
-							title:'',
-							amount:'',
-							date:dayjs(),
-							type:transactionTypeOptions[0]
-						}}
-						// layout="vertical"
-					>
-						<Form.Item
-							label="Title"
-							name="title"
-							rules={[{ required: true}]}
-						>
-							<Input
-								
-							/>
-						</Form.Item>
-						<Form.Item
-							label="Amount"
-							name="amount"
-							rules={[{ required: true}]}
-						>
-							<InputNumber 
-								addonAfter="€"
-								min="0.01"
-								step="0.01"
-
-							/>
-						</Form.Item>
-						<Form.Item
-							label="Date"
-							name="date"
-							rules={[{ required: true}]}
-						>
-							<DatePicker
-								picker="date"
-								disabledDate={(date) => date>=dayjs()}
-								// value={new Date(timestampInput).toISOString().substring(0, 10)}
-							/>
-						</Form.Item>
-						<Form.Item
-							label="Type"
-							name="type"
-							rules={[{ required: true}]}
-						>
-							<Select
-
-								options={transactionTypeOptions.map((value) =>{
-									const tmp = {};
-									tmp.value=value;
-									tmp.label=value;
-									return tmp;
-								})}
-							/>
-						</Form.Item>
-						
-						<Button type="primary" htmlType="submit">
-							Add
-						</Button>
-					</Form>
-				</Card>
-			</Col>
-		);
-	}
+	// const { titleInput, amountInput, timestampInput, typeInput } = this.state;
+	return(
+		<Modal 
+			title="Add Transaction"
+			open={isModalOpen}
+			okText="Add"
+			cancelText="Cancel"
+			onOk={() => {
+				form.validateFields()
+				.then((values) => {
+					const { title, amount, date, type } = values;
+					const timestamp = new Date(date).getTime();
+					addTransaction(title, amount, timestamp, type);
+					closeModal();
+					form.resetFields();
+				})
+				.catch((info) => {
+					console.log('Validate Failed:', info);
+				});
+			}}
+			onCancel={() => {
+				closeModal();
+				form.resetFields();
+			}}
+		>
+			<Form 
+				form={form}
+				initialValues={{
+					title:'',
+					amount:'',
+					date:dayjs(),
+					type:transactionTypeOptions[0]
+				}}
+				labelAlign="left"
+				labelCol={{
+					span:4
+				}}
+				
+			>
+				<Form.Item
+					label="Title"
+					name="title"
+					rules={[{ required: true}]}
+				>
+					<Input
+						allowClear
+						placeholder="Title"
+						style={{width:"100%"}}
+					/>
+				</Form.Item>
+				<Form.Item
+					label="Amount"
+					name="amount"
+					rules={[{ required: true}]}
+				>
+					<InputNumber 
+						addonAfter="€"
+						min="0.01"
+						step="0.01"
+						placeholder="Amount" 
+						style={{width:"100%"}}
+					/>
+				</Form.Item>
+				<Form.Item
+					label="Date"
+					name="date"
+					rules={[{ required: true}]}
+				>
+					<DatePicker
+						picker="date"
+						disabledDate={(date) => date>=dayjs()}
+						style={{width:"100%"}}
+						placeholder="Date"
+					/>
+				</Form.Item>
+				<Form.Item
+					label="Type"
+					name="type"
+					rules={[{ required: true}]}
+				>
+					<Select
+						style={{width:"100%"}}
+						placeholder="Type"
+						options={transactionTypeOptions.map((value) =>{
+							const tmp = {};
+							tmp.value=value;
+							tmp.label=value;
+							return tmp;
+						})}
+					/>
+				</Form.Item>
+			</Form>
+		</Modal>
+	);
 }

@@ -58,6 +58,7 @@ export default function TransactionInput(props){
 						allowClear
 						placeholder="Title"
 						style={{width:"100%"}}
+						type="text"
 					/>
 				</Form.Item>
 				<Form.Item
@@ -71,6 +72,7 @@ export default function TransactionInput(props){
 						step="0.01"
 						placeholder="Amount" 
 						style={{width:"100%"}}
+						type="number"
 					/>
 				</Form.Item>
 				<Form.Item
@@ -83,6 +85,7 @@ export default function TransactionInput(props){
 						disabledDate={(date) => date>=dayjs()}
 						style={{width:"100%"}}
 						placeholder="Date"
+						type="date"
 					/>
 				</Form.Item>
 				<Form.Item

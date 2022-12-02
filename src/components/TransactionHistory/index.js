@@ -2,7 +2,7 @@
 
 import { transactionTypeOptions } from '../utils'
 
-import { Card, Col, Table, Button } from 'antd';
+import { Card, Col, Table, Button,  message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 export default function TransactionHistory (props) {
@@ -20,6 +20,22 @@ export default function TransactionHistory (props) {
 					// 	defaultPageSize:5,
 					// 	// defaultCurrent:1,
 					// }}
+					expandable={{
+						expandedRowRender: (record, index, indent, expanded) => (
+							<Button 
+								// type="dashed" 
+								icon={<DeleteOutlined />}
+								onClick={()=>{
+									deleteTransaction(record.key);
+									message.success(`Record deleted.`)
+								}}
+								style={{
+									width: '100%',
+								}}
+								danger
+							/>
+						)
+					}}
 					scroll={{
 						scrollToFirstRowOnChange:true,
 						y:300
@@ -30,7 +46,8 @@ export default function TransactionHistory (props) {
 							dataIndex: "title",
 							key: "title",
 							align:"center",
-							ellipsis:true
+							ellipsis:true,
+							width:"10rem"
 						},
 						{
 							title: "Amount",
@@ -59,21 +76,8 @@ export default function TransactionHistory (props) {
 							}),
 							onFilter: (value, record) => record.type === value,
 							align:"center",
-							width:100
-						},
-						{
-							title: "Action",
-							key: "action",
-							render: (_, record) => (
-								<Button 
-									type="primary" 
-									icon={<DeleteOutlined />}
-									onClick={()=>deleteTransaction(record.key)}
-									danger
-								/>
-							),
-							align:"center",
-							width:75
+							width:100,
+							responsive: ['md']
 						}
 					]}
 					dataSource={transactionsList.map((value) => {
@@ -85,7 +89,6 @@ export default function TransactionHistory (props) {
 						tmp.amount=parseFloat(amount).toFixed(2) + " €";
 						tmp.date=`${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`;
 						tmp.type=type;
-						tmp.action=null;
 						return tmp;
 					})}
 				/>
